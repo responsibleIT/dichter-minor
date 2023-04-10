@@ -103,7 +103,7 @@
             <h4>Example Request:</h4>
             <p>Let's generate a haiku (key 5) about a "mooi bos and warme zomerdag"</p>
             <pre>
-GET <%= it.host %>api/poetry?type=haiku&theme=mooi bos, warme zomerdag
+GET <%= it.host %>api/poetry?type=5&theme=mooi bos, warme zomerdag
 Authorization: Bearer <%= it.bk + "\n" %>
             </pre>
             <p>Request can also be:</p>
