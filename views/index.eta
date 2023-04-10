@@ -12,6 +12,7 @@
     <nav aria-label="breadcrumb">
         <ul>
             <li><a href="/">Home</a></li>
+            <li><a href="/docs">Docs</a></li>
         </ul>
     </nav>
 
@@ -28,6 +29,9 @@
                 <option value="tragedie plot">Tragedie plot</option>
                 <option value="manifest">Manifest</option>
                 <option value="essay">Essay</option>
+                <option value="six word story">Six Word Story</option>
+                <option value="toneel opening tragedie">Toneel Opening Tragedie</option>
+                <option value="toneel opening komedie">Toneel Opening Komedie</option>
             </select>
         </label>
         <label>
