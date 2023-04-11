@@ -1,0 +1,8 @@
+.fieldset {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 10px;
+  &__legend {
+  }
+}

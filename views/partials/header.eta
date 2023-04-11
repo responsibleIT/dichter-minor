@@ -1,0 +1,9 @@
+<header class="header">
+  <img class="logo" src="public/assets/veer.svg" width="60px" />
+  <nav class="nav">
+    <ul class="nav__list">
+      <li class="nav__list-item"><a href="/">Home</a></li>
+      <li class="nav__list-item"><a href="/docs">Docs</a></li>
+    </ul>
+  </nav>
+</header>

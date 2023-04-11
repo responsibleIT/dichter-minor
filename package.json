@@ -14,9 +14,9 @@
     "build:js": "node build/build-js.js",
     "build:assets": "node build/build-assets.js",
     "watch": "run-p watch:*",
-    "watch:css": "chokidar 'src/scss/*' --command 'npm run build:css'",
-    "watch:assets": "chokidar 'src/**/*.*' --command 'npm run build:assets'",
-    "watch:js": "chokidar 'src/js/*.js' --command 'npm run build:js'"
+    "watch:css": "chokidar 'src/scss/**/*.scss' --command 'npm run build:css'",
+    "watch:assets": "chokidar 'src/assets/**/*.*' --command 'npm run build:assets'",
+    "watch:js": "chokidar 'src/js/**/*.js' --command 'npm run build:js'"
   },
   "author": "",
   "license": "ISC",
