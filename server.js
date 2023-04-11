@@ -228,13 +228,13 @@ function api_generate(poemType, themes) {
         case "toneel opening tragedie":
             msgs.push({
                 "role": "system",
-                "content": "Schrijf een toneel dialoog van een tragedie voor de eerste akte."
+                "content": "Schrijf een toneel openings dialoog van een tragedie voor de eerste akte. So this is a script between one or more characters."
             });
             break;
         case "toneel opening komedie":
             msgs.push({
                 "role": "system",
-                "content": "Schrijf een toneel dialoog van een komedie voor de eerste akte."
+                "content": "Schrijf een toneel openings dialoog van een komedie voor de eerste akte. So this is a script between one or more characters."
             });
             break;
     }
