@@ -126,13 +126,13 @@ function generate(poemType, themes) {
         case "toneel opening tragedie":
             messages.push({
                 "role": "system",
-                "content": "Schrijf een toneel dialoog van een tragedie voor de eerste akte."
+                "content": "Schrijf een toneel openings dialoog van een tragedie voor de eerste akte. So this is a script dialogue between one or more characters, I want this to be like for example bobby: blablabla, susan: blablabla."
             });
             break;
         case "toneel opening komedie":
             messages.push({
                 "role": "system",
-                "content": "Schrijf een toneel dialoog van een komedie voor de eerste akte."
+                "content": "Schrijf een toneel openings dialoog van een komedie voor de eerste akte. So this is a script dialogue between one or more characters, I want this to be like for example bobby: blablabla, susan: blablabla."
             });
             break;
     }
@@ -228,13 +228,13 @@ function api_generate(poemType, themes) {
         case "toneel opening tragedie":
             msgs.push({
                 "role": "system",
-                "content": "Schrijf een toneel openings dialoog van een tragedie voor de eerste akte. So this is a dialogue script between one or more characters, I want this to be like person1: blablabla, person2: blablabla."
+                "content": "Schrijf een toneel openings dialoog van een tragedie voor de eerste akte. So this is a script dialogue between one or more characters, I want this to be like for example bobby: blablabla, susan: blablabla."
             });
             break;
         case "toneel opening komedie":
             msgs.push({
                 "role": "system",
-                "content": "Schrijf een toneel openings dialoog van een komedie voor de eerste akte. So this is a dialogue script between one or more characters, I want this to be like person1: blablabla, person2: blablabla."
+                "content": "Schrijf een toneel openings dialoog van een komedie voor de eerste akte. So this is a script dialogue between one or more characters, I want this to be like for example bobby: blablabla, susan: blablabla."
             });
             break;
     }
