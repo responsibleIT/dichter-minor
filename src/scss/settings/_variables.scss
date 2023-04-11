@@ -1,2 +1,9 @@
 // Overige variablen
 $max-page-width: 2000px;
+
+$h-font: Zephyr, serif;
+$body-font: "Verdana", sans-serif;
+
+$transition-duration: 200ms;
+$transition-timing: ease-in-out;
+$transition-settings: $transition-duration all $transition-timing;

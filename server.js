@@ -434,6 +434,7 @@ const start = async () => {
       }
 
       let prompts = generate(poemType, theme, true);
+
       let data = await getCompletion(prompts);
 
       return reply.view("/views/output.eta", { data: data });

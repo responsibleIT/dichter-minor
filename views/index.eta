@@ -3,50 +3,126 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link
-      rel="stylesheet"
-      href="https://unpkg.com/@picocss/pico@1.*/css/pico.min.css" />
     <script src="https://unpkg.com/htmx.org@1.8.6"></script>
 
     <link rel="stylesheet" href="public/css/all.css" />
-    <script src="public/scripts/index.js" defer></script>
+    <script src="public/scripts/index.js" type="module"></script>
 
     <title><%= it.title %></title>
   </head>
   <body>
-    <main class="container">
-      <nav aria-label="breadcrumb">
-        <ul>
-          <li><a href="/">Home</a></li>
-          <li><a href="/docs">Docs</a></li>
-        </ul>
-      </nav>
+    <%~ includeFile('partials/header') %>
+    <main class="container page">
+      <h1 class="title title--h1">Genereer een tekst</h1>
+      <form
+        hx-post="/"
+        hx-target="#output"
+        hx-indicator="#spinner"
+        class="generator">
+        <fieldset class="fieldset">
+          <legend class="fieldset__legend">Stijl</legend>
+          <label class="control control--type">
+            <span class="control__label">Limerick</span>
+            <input
+              class="control__input"
+              type="radio"
+              name="type"
+              value="limerick" />
+          </label>
+          <label class="control control--type">
+            <span class="control__label">Elevenie</span>
+            <input
+              class="control__input"
+              type="radio"
+              name="type"
+              value="elevenie" />
+          </label>
+          <label class="control control--type">
+            <span class="control__label">Ollekebolleke</span>
+            <input
+              class="control__input"
+              type="radio"
+              name="type"
+              value="ollekebolleke" />
+          </label>
+          <label class="control control--type">
+            <span class="control__label">Snelsonnet</span>
+            <input
+              class="control__input"
+              type="radio"
+              name="type"
+              value="snelsonnet" />
+          </label>
+          <label class="control control--type">
+            <span class="control__label">Haiku</span>
+            <input
+              class="control__input"
+              type="radio"
+              name="type"
+              value="haiku" />
+          </label>
+          <label class="control control--type">
+            <span class="control__label">Romantisch drama plot</span>
+            <input
+              class="control__input"
+              type="radio"
+              name="type"
+              value="romantisch drama plot" />
+          </label>
+          <label class="control control--type">
+            <span class="control__label">Tragedie plot</span>
+            <input
+              class="control__input"
+              type="radio"
+              name="type"
+              value="tragedie plot" />
+          </label>
+          <label class="control control--type">
+            <span class="control__label">Manifest</span>
+            <input
+              class="control__input"
+              type="radio"
+              name="type"
+              value="manifest" />
+          </label>
+          <label class="control control--type">
+            <span class="control__label">Essay</span>
+            <input
+              class="control__input"
+              type="radio"
+              name="type"
+              value="essay" />
+          </label>
+          <label class="control control--type">
+            <span class="control__label">Six Word Story</span>
+            <input
+              class="control__input"
+              type="radio"
+              name="type"
+              value="six word story" />
+          </label>
+          <label class="control control--type">
+            <span class="control__label">Toneel Opening Tragedie</span>
+            <input
+              class="control__input"
+              type="radio"
+              name="type"
+              value="toneel opening tragedie" />
+          </label>
+          <label class="control control--type">
+            <span class="control__label">Toneel Opening Komedie</span>
+            <input
+              class="control__input"
+              type="radio"
+              name="type"
+              value="toneel opening komedie" />
+          </label>
+        </fieldset>
 
-      <form hx-post="/" hx-target="#output" hx-indicator="#spinner">
-        <label>
-          Type
-          <select name="type">
-            <option value="limerick">Limerick</option>
-            <option value="elevenie">Elevenie</option>
-            <option value="ollekebolleke">Ollekebolleke</option>
-            <option value="snelsonnet">Snelsonnet</option>
-            <option value="haiku">Haiku</option>
-            <option value="romantisch drama plot">Romantisch drama plot</option>
-            <option value="tragedie plot">Tragedie plot</option>
-            <option value="manifest">Manifest</option>
-            <option value="essay">Essay</option>
-            <option value="six word story">Six Word Story</option>
-            <option value="toneel opening tragedie">
-              Toneel Opening Tragedie
-            </option>
-            <option value="toneel opening komedie">
-              Toneel Opening Komedie
-            </option>
-          </select>
-        </label>
-        <label>
-          Thema(s)
+        <label class="control control--theme" data-thema>
+          <span class="control__label">Thema(s)</span>
           <input
+            class="control__input"
             required
             type="text"
             id="theme"
@@ -54,7 +130,7 @@
             placeholder="Thema" />
         </label>
 
-        <button type="submit">Genereer Tekst</button>
+        <button class="cta" type="submit">Genereer Tekst</button>
       </form>
 
       <a id="spinner" class="htmx-indicator" aria-busy="true"
