@@ -288,3 +288,7 @@ dist
 .svelte-kit
 
 # End of https://www.toptal.com/developers/gitignore/api/macos,intellij,node
+
+### Public directory ###
+# The public directory contains static files and folders.
+/public
