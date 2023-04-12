@@ -321,6 +321,17 @@ const start = async () => {
     });
 
     fastify.route({
+        method: 'GET',
+        url: '/api/types',
+        preHandler: fastify.auth([
+            fastify.verifyBearerAuth
+        ]),
+        handler: async (request, reply) => {
+            reply.send({data: poemTypes});
+        }
+    });
+
+    fastify.route({
         method: 'POST',
         url: '/api/keywords',
         preHandler: fastify.auth([

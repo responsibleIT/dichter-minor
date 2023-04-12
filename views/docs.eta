@@ -37,7 +37,8 @@
             <p>Generate any poetry type about any theme with this endpoint.</p>
             <h4>Type query parameter</h4>
             <p>The keys are unique identifiers that can be used for the type query parameter for this API
-                endpoint. The corresponding values describe the type of poem or literary work that can be generated.</p>
+                endpoint. The corresponding values describe the type of poem or literary work that can be generated. You
+                can also use the <b>/api/types</b> endpoint to get the list below.</p>
             <table>
                 <thead>
                 <tr>
@@ -96,6 +97,31 @@
                 </tr>
                 </tbody>
             </table>
+            <h5>Example request:</h5>
+            <pre>
+GET <%= it.host %>api/types
+Authorization: Bearer <%= it.bk + "\n" %>
+            </pre>
+            <h5>Response:</h5>
+            <pre>
+{
+    "data": {
+        "1": "limerick",
+        "2": "elevenie",
+        "3": "ollekebolleke",
+        "4": "snelsonnet",
+        "5": "haiku",
+        "6": "romantisch drama plot",
+        "7": "tragedie plot",
+        "8": "manifest",
+        "9": "essay",
+        "10": "six word story",
+        "11": "toneel opening tragedie",
+        "12": "toneel opening komedie",
+        "elfje": "elevenie"
+    }
+}
+            </pre>
             <h4>Theme query parameter</h4>
             <p>The theme query parameter is mandatory and is the basis to generate a text type based on any given theme
                 /
@@ -194,8 +220,12 @@ Body:
         </pre>
         <section>
             <h3>POST /api/rewrite</h3>
-            <p>Rewrite any given text into a new poetic text based on a word in the text that needs to be replaced by another.</p>
-            <p>This endpoint accepts a POST request with a JSON object containing a paragraph key, and returns a response containing a new string where all instances of a given word, specified by the old parameter, are replaced with another word, specified by the new parameter. Just like the above endpoint, don't forget the headers!</p>
+            <p>Rewrite any given text into a new poetic text based on a word in the text that needs to be replaced by
+                another.</p>
+            <p>This endpoint accepts a POST request with a JSON object containing a paragraph key, and returns a
+                response containing a new string where all instances of a given word, specified by the old parameter,
+                are replaced with another word, specified by the new parameter. Just like the above endpoint, don't
+                forget the headers!</p>
             <h4>Example Request:</h4>
             <pre>
 POST <%= it.host %>api/rewrite?old=mooi&new=fraai
