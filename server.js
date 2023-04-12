@@ -20,6 +20,8 @@ fastify.register(require('@fastify/view'), {
 
 fastify.register(require('@fastify/formbody'));
 
+fastify.register(require('@fastify/cors'));
+
 fastify.register(import('@fastify/rate-limit'), {
     max: 1000,
     timeWindow: '1 minute'
