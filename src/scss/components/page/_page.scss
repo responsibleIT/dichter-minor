@@ -1,3 +1,11 @@
 .page {
-  padding: 0 20px;
+	padding: 0 2em;
+
+	&__home {
+		display: grid;
+		place-items: center;
+		place-content: center;
+
+		height: 80vh;
+	}
 }

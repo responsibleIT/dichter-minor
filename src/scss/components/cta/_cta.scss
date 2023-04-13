@@ -1,5 +1,59 @@
 .cta {
-  padding: 10px 12px;
-  font-weight: bold;
-  width: fit-content;
+	padding: 10px 12px;
+	font-weight: bold;
+	width: fit-content;
+
+	&__generate {
+		border: none;
+		background: none;
+		border-radius: .5em;
+		box-shadow: 1px 4px 0.3em $tet-color;
+
+		&:hover {
+			box-shadow: 1px 4px 0.3em $tet-color;
+			background: #f8e2c4;
+			transform: translateY(-2px);
+		}
+
+		&:active {
+			box-shadow: 1px 0 0.3em $tet-color;
+			background: #f8e2c4;
+			transform: translateY(2px);
+		}
+	}
+
+	&__start {
+		display: flex;
+		align-items: baseline;
+		margin: 2em 0;
+		text-decoration: none;
+		color:$tet-color ;
+
+		span {
+			color: inherit;
+			background-color: $qua-color;
+			z-index: 1;
+		}
+
+		img {
+			transform: scaleX(-1) translateX(20px) translateY(11px);
+			transition: 1s ease-in;
+		}
+
+		&:hover {
+			img {
+				animation: identifier 1s ease-in-out;
+				transform: scaleX(-1) translateX(0px) translateY(16px);
+			}
+		}
+	}
+}
+
+@keyframes identifier {
+	0% {
+		transform: scaleX(-1) translateX(20px) translateY(11px);
+	}
+	100% {
+		transform: scaleX(-1) translateX(0px) translateY(16px);
+	}
 }
