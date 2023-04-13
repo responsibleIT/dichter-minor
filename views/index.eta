@@ -8,25 +8,9 @@
     <link rel="stylesheet" href="public/css/all.css" />
     <script src="public/scripts/index.js" type="module"></script>
 
-	<title>Home | <%= it.title %></title>
-	</head>
-	<body>
-		<%~ includeFile('partials/header') %>
-		<main class="container page page__home">
-			<h1 class="title title__h0"><%= it.title %> </h1>
-			
-			<a href="/filter" class="cta cta__start">
-				<span>Start</span>
-				<img class="logo" src="public/assets/veer.svg" width="60px" />
-			</a>
-
-			<div class="ornaments">
-				<span></span>
-				<span></span>
-				<span></span>
-				<span></span>
-			</div>
-
-		</main>
-	</body>
+    <title>Home | <%= it.title %></title>
+  </head>
+  <body>
+    <%~ includeFile('partials/header') %>
+  </body>
 </html>
