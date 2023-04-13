@@ -10,8 +10,16 @@
     max-height: unset;
     height: 100%;
     border: none;
-    background-color: rgba(white, 0.5);
+    background-color: rgba(white, 0.75);
     padding: 4em 2em;
+  }
+
+  &__close {
+    display: block;
+
+    &--hidden {
+      display: none;
+    }
   }
 }
 
