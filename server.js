@@ -413,6 +413,14 @@ const start = async () => {
     });
   });
 
+  fastify.get("/details", async (request, reply) => {
+    reply.view("/views/details.eta", {
+      title: "Result | Stadsdichter",
+      bk: process.env.BK,
+      host: process.env.ENDPOINT,
+    });
+  });
+
   fastify.get("/api", async (request, reply) => {
     reply.redirect("/docs");
   });
