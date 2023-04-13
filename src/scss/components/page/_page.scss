@@ -1,11 +1,18 @@
 .page {
-	padding: 0 2em;
+  padding: 0 2em;
+}
 
-	&__home {
-		display: grid;
-		place-items: center;
-		place-content: center;
+.home {
+  inset: 0;
+  display: grid;
+  place-items: center;
+  place-content: center;
+  width: 100%;
+  height: 100%;
+  transform: translateY(-100%);
+  transition: all 300ms ease-in-out;
 
-		height: 80vh;
-	}
+  &--visible {
+    transform: translateY(0);
+  }
 }
