@@ -11,6 +11,10 @@
     display: block;
   }
 
+  &--sec {
+    background-color: $prim-color;
+  }
+
   &__generate {
     border: none;
     background: none;

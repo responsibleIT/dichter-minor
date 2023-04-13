@@ -28,6 +28,7 @@ if (submit) {
 
   const displayPoetry = (data) => {
     loading(false);
+    aside.innerHTML = "";
     paragraphString = "";
 
     console.log("displayPoetry", data);
@@ -55,11 +56,25 @@ if (submit) {
   };
 
   const replaceWord = async (e) => {
+    loading(true);
     const item = e.target;
     const oldWord = item.dataset.oldWord;
     const newWord = item.textContent;
 
-    displayPoetry(testRewrite);
+    const response = await fetch("/api/rewrite", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        oldWord,
+        newWord,
+        paragraph: output.textContent,
+      }),
+    });
+
+    const { data } = await response.json();
+    displayPoetry(data);
   };
 
   const showWordAlternatives = (e) => {
