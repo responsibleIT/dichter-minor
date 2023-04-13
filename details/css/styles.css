@@ -1,0 +1,77 @@
+*,
+::after,
+::before {
+  box-sizing: border-box;
+  font-family: Verdana, sans-serif;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+@font-face {
+	font-family: Zephyr;
+	src: url("/details/ZephyrRegular.woff");
+	font-weight: 400;
+	font-style: normal;
+  }
+
+.header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 10px 20px;
+	height: 90px;
+}
+
+.header nav {
+	display: block;
+}
+
+.header nav ul {
+	display: flex;
+	gap: 10px;
+}
+
+.header nav ul li {
+	display: list-item;
+	text-align: -webkit-match-parent;
+}
+
+.header nav ul li a {
+	cursor: pointer;
+}
+
+.title {
+	font-family: Zephyr, sans-serif;
+	font-style: italic;
+}
+
+.container {
+	padding: 0 20px;
+}
+
+.text-container {
+	display: flex;
+	align-items: center;
+}
+
+.results {
+	margin-bottom: 10px;
+	padding: 10px;
+	max-width: 600px;
+	line-height: 2.2;
+	border: 1px solid #000;
+}
+
+.words-container {
+	border: 1px solid #000;
+	padding: 10px;
+	width: 200px;
+	margin: 10px;
+
+}
+
+.options {
+	padding: 10px;
+	font-weight: bold;
+}
