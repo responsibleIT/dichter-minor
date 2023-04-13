@@ -1,0 +1,129 @@
+<main class="container page">
+  <h1 class="title title--h1">Genereer een tekst</h1>
+  <section method="POST" target="/api/poetry" class="generator">
+    <fieldset class="fieldset">
+      <legend class="fieldset__legend">Stijl</legend>
+      <label class="control control--type">
+        <span class="control__label">Limerick</span>
+        <input
+          class="control__input"
+          type="radio"
+          name="type"
+          value="limerick"
+        />
+      </label>
+      <label class="control control--type">
+        <span class="control__label">Elevenie</span>
+        <input
+          class="control__input"
+          type="radio"
+          name="type"
+          value="elevenie"
+        />
+      </label>
+      <label class="control control--type">
+        <span class="control__label">Ollekebolleke</span>
+        <input
+          class="control__input"
+          type="radio"
+          name="type"
+          value="ollekebolleke"
+        />
+      </label>
+      <label class="control control--type">
+        <span class="control__label">Snelsonnet</span>
+        <input
+          class="control__input"
+          type="radio"
+          name="type"
+          value="snelsonnet"
+        />
+      </label>
+      <label class="control control--type">
+        <span class="control__label">Haiku</span>
+        <input class="control__input" type="radio" name="type" value="haiku" />
+      </label>
+      <label class="control control--type">
+        <span class="control__label">Romantisch drama plot</span>
+        <input
+          class="control__input"
+          type="radio"
+          name="type"
+          value="romantisch drama plot"
+        />
+      </label>
+      <label class="control control--type">
+        <span class="control__label">Tragedie plot</span>
+        <input
+          class="control__input"
+          type="radio"
+          name="type"
+          value="tragedie plot"
+        />
+      </label>
+      <label class="control control--type">
+        <span class="control__label">Manifest</span>
+        <input
+          class="control__input"
+          type="radio"
+          name="type"
+          value="manifest"
+        />
+      </label>
+      <label class="control control--type">
+        <span class="control__label">Essay</span>
+        <input class="control__input" type="radio" name="type" value="essay" />
+      </label>
+      <label class="control control--type">
+        <span class="control__label">Six Word Story</span>
+        <input
+          class="control__input"
+          type="radio"
+          name="type"
+          value="six word story"
+        />
+      </label>
+      <label class="control control--type">
+        <span class="control__label">Toneel Opening Tragedie</span>
+        <input
+          class="control__input"
+          type="radio"
+          name="type"
+          value="toneel opening tragedie"
+        />
+      </label>
+      <label class="control control--type">
+        <span class="control__label">Toneel Opening Komedie</span>
+        <input
+          class="control__input"
+          type="radio"
+          name="type"
+          value="toneel opening komedie"
+        />
+      </label>
+    </fieldset>
+
+    <label class="control control--theme" data-thema>
+      <span class="control__label">Thema(s)</span>
+      <input
+        class="control__input"
+        required
+        type="text"
+        id="theme"
+        name="theme"
+        placeholder="Thema"
+      />
+    </label>
+
+    <button class="cta" type="submit" data-submit>Genereer Tekst</button>
+  </section>
+
+  <a id="spinner" class="htmx-indicator" aria-busy="true">Bezig met genereren,
+    dit kan een minuut of langer duren..</a>
+  <a id="spinner-2" class="htmx-indicator" aria-busy="true">Bestaande tekst aan
+    het aanpassen, dit kan een minuut of langer duren..</a>
+
+  <section id="output" data-outlet></section>
+
+  <aside></aside>
+</main>
