@@ -3,6 +3,7 @@
  * @param {boolean} loading
  */
 const loadDialog = document.querySelector("[data-loading]");
+const loadIconFrame = document.querySelector("[data-load_frame]");
 const loadDialogClose = document.querySelector("[data-loading-close]");
 const loadGalgjeButton = document.querySelector("[data-galgje-close]");
 
@@ -15,7 +16,7 @@ function loading(loading) {
     loader.classList.add("icon", "icon--loading");
     loadDialogClose.classList.add("galgje__close--hidden");
 
-    output.appendChild(loader);
+    loadIconFrame.appendChild(loader);
   } else {
     const loader = document.querySelector(".icon--loading");
     loader.remove();

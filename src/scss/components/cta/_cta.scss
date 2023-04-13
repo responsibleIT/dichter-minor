@@ -1,72 +1,73 @@
 .cta {
-  padding: 10px 12px;
-  font-weight: bold;
-  width: fit-content;
+	padding: 10px 12px;
+	font-weight: bold;
+	width: fit-content;
 
-  &--hidden {
-    display: none;
-  }
+	&--hidden {
+		display: none;
+	}
 
-  &--visible {
-    display: block;
-  }
+	&--visible {
+		display: block;
+	}
 
-  &--sec {
-    background-color: $prim-color;
-  }
+	&--sec {
+		background-color: $prim-color;
+	}
 
-  &__generate {
-    border: none;
-    background: none;
-    border-radius: 0.5em;
-    box-shadow: 1px 4px 0.3em $tet-color;
+	&__next {
+		margin-top: 1em;
+		border: 1px solid black;
+		background-color: #fff1df;
+		border-radius: 0.5em;
 
-    &:hover {
-      box-shadow: 1px 4px 0.3em $tet-color;
-      background: #f8e2c4;
-      transform: translateY(-2px);
-    }
+		&:hover {
+			box-shadow: 1px 4px 0.3em $tet-color;
+			background: #f8e2c4;
+			transform: translateY(-2px);
+		}
 
-    &:active {
-      box-shadow: 1px 0 0.3em $tet-color;
-      background: #f8e2c4;
-      transform: translateY(2px);
-    }
-  }
+		&:active {
+			box-shadow: 1px 0 0.3em $tet-color;
+			background: #f8e2c4;
+			transform: translateY(2px);
+		}
+	}
 
-  &__start {
-    display: flex;
-    align-items: baseline;
-    margin: 2em 0;
-    text-decoration: none;
-    color: $tet-color;
-    background-color: transparent;
+	&__start {
+		display: flex;
+		align-items: baseline;
+		margin: 2em 0;
+		text-decoration: none;
+		color: $tet-color;
+		background-color: transparent;
 
-    span {
-      color: inherit;
-      background-color: $qua-color;
-      z-index: 1;
-    }
+		span {
+			color: inherit;
+			background-color: $qua-color;
+			z-index: 1;
+		}
 
-    img {
-      transform: scaleX(-1) translateX(20px) translateY(11px);
-      transition: 1s ease-in;
-    }
+		img {
+			width: 3em;
+			transform: scaleX(-1) translateX(35px) translateY(17px);
+			transition: 1s ease-in;
+		}
 
-    &:hover {
-      img {
-        animation: identifier 1s ease-in-out;
-        transform: scaleX(-1) translateX(0px) translateY(16px);
-      }
-    }
-  }
+		&:hover {
+			img {
+				animation: identifier 1s ease-in-out;
+				transform: scaleX(-1) translateX(0px) translateY(24px);
+			}
+		}
+	}
 }
 
 @keyframes identifier {
-  0% {
-    transform: scaleX(-1) translateX(20px) translateY(11px);
-  }
-  100% {
-    transform: scaleX(-1) translateX(0px) translateY(16px);
-  }
+	0% {
+		transform: scaleX(-1) translateX(35px) translateY(17px);
+	}
+	100% {
+		transform: scaleX(-1) translateX(0px) translateY(24px);
+	}
 }

@@ -1,8 +1,8 @@
 .icon {
   &--loading {
-    height: 50px;
-    width: 50px;
-    border: 10px solid $prim-color;
+    height: 30px;
+    width: 30px;
+    border: 6px solid $prim-color;
     border-radius: 50%;
     border-bottom-color: transparent;
     animation: spin 1s linear infinite;

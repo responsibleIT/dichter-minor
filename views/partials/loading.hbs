@@ -1,12 +1,20 @@
 <dialog class="galgje" data-loading>
+  <div class="loading" data-load_frame>
+    <span></span>
+  </div>
   <h2 class="title title--h2">Galgje voor tijdens het wachten</h2>
-  <p class="text">Gemiddelde wachttijd ongeveer 1 minuut</p>
+  <p class="text">Gemiddelde wachttijd is ongeveer 2 minuut</p>
   <p class="text text--small">Geef de AI wat tijd 😄</p>
   <section class="word" data-word></section>
   <section class="options" data-options></section>
-  <button class="cta" data-next-word>Volgend woord</button>
+  <button class="cta cta__next" data-next-word>Volgend woord</button>
   <section class="galgje__close galgje__close--hidden" data-loading-close>
     <p class="text">De tekst is gegenereerd</p>
     <button class="cta cta--sec" data-galgje-close>Sluit galgje</button>
   </section>
+
+  <div class="popup popup--hidden" data-popup>
+    <p></p>
+  </div>
+
 </dialog>

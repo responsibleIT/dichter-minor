@@ -145,15 +145,16 @@
         id="theme"
         name="theme"
         placeholder="Thema"
+        autocomplete="off"
       />
     </label>
 
-    <button class="cta cta--hidden" type="submit" data-submit>Genereer Tekst</button>
+    <button class="cta cta--hidden cta__next" type="submit" data-submit>Genereer Tekst</button>
   </section>
 
-  {{> loading }}
 
   <section id="output" data-outlet></section>
 
   <aside></aside>
 </main>
+  {{> loading }}

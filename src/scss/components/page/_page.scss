@@ -2,6 +2,10 @@
   padding: 0 2em;
 }
 
+body:has([open]) .page {
+  filter: blur(10px);
+}
+
 .home {
   inset: 0;
   display: grid;

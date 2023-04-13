@@ -1,61 +1,114 @@
 .galgje {
-  flex-direction: column;
-  gap: 20px;
-  align-items: center;
+	position: relative;
+	flex-direction: column;
+	gap: 20px;
+	align-items: center;
 
-  &[open] {
-    display: flex;
-    inset: 0;
-    max-width: unset;
-    max-height: unset;
-    height: 100%;
-    border: none;
-    background-color: rgba(white, 0.75);
-    padding: 4em 2em;
-  }
+	&[open] {
+		display: flex;
+		inset: 0;
+		max-width: unset;
+		max-height: unset;
+		height: 100%;
+		width: 100vw;
+		border: none;
+		padding: 4em 2em;
+	}
 
-  &__close {
-    display: block;
+	&__close {
+		display: block;
 
-    &--hidden {
-      display: none;
-    }
-  }
+		&--hidden {
+			display: none;
+		}
+	}
 }
 
 .word {
-  display: flex;
-  gap: 10px;
+	display: flex;
+	gap: 10px;
 }
 
 .options {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	max-width: 50vw;
+  margin-top: 1em;
 }
 
 .letter {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-bottom: 5px solid hotpink;
-  width: 80px;
-  height: 80px;
-  font-size: 3em;
-  background: pink;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-bottom: 5px solid $tet-color;
+	width: 80px;
+	height: 80px;
+	font-size: 3em;
 }
 
-button {
-  cursor: pointer;
-  padding: 1em;
-  font-size: 2em;
-  border: none;
-  background-color: dodgerblue;
-  color: white;
+.loading {
+	position: absolute;
+	bottom: 5%;
+	right: 8%;
+	font-size: 1em;
+	font-weight: bold;
 
-  &[disabled] {
-    cursor: not-allowed;
-    background: lightblue;
-    color: grey;
-  }
+	display: flex;
+	flex-direction: row-reverse;
+	align-items: center;
+	gap: 0.8em;
+}
+
+.popup {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 100%;
+	height: auto;
+	max-width: 60vw;
+	padding: 1em;
+
+	background-color: $bg-color;
+	border: 2px solid $tet-color;
+	border-radius: 0.5em;
+	box-shadow: 0px 6px 30px rgba(0, 0, 0, 0.4);
+	text-align: center;
+  font-size: 2.375rem;
+
+	z-index: 1;
+	opacity: 0;
+	visibility: hidden;
+	text-align: center;
+	transition: all 0.3s;
+
+	&--visible {
+		opacity: 1;
+		visibility: visible;
+		transform: translate(-50%, -50%) scale(1);
+	}
+}
+button {
+	cursor: pointer;
+	padding: 1em;
+	font-size: 2em;
+	border: none;
+	color: $tet-color;
+
+	&.alphabet {
+		border: 2px solid $tet-color;
+		border-radius: 0.3em;
+
+		&:hover:not([disabled]) {
+			color: #fff;
+			background-color: dodgerblue;
+		}
+	}
+
+	&[disabled] {
+		cursor: not-allowed;
+		background: lightblue;
+		color: grey;
+	}
 }
