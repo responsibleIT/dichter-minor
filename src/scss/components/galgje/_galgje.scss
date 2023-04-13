@@ -1,0 +1,53 @@
+.galgje {
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+
+  &[open] {
+    display: flex;
+    inset: 0;
+    max-width: unset;
+    max-height: unset;
+    height: 100%;
+    border: none;
+    background-color: rgba(white, 0.5);
+    padding: 4em 2em;
+  }
+}
+
+.word {
+  display: flex;
+  gap: 10px;
+}
+
+.options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.letter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 5px solid hotpink;
+  width: 80px;
+  height: 80px;
+  font-size: 3em;
+  background: pink;
+}
+
+button {
+  cursor: pointer;
+  padding: 1em;
+  font-size: 2em;
+  border: none;
+  background-color: dodgerblue;
+  color: white;
+
+  &[disabled] {
+    cursor: not-allowed;
+    background: lightblue;
+    color: grey;
+  }
+}

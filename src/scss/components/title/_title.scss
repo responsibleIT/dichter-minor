@@ -2,7 +2,16 @@
   font-family: $h-font;
   font-style: italic;
 
-  &__h0 {
-    font-size: 3.052rem;
+  &--h0 {
+    font-size: 7.5vmin;
+  }
+
+  &--h1 {
+    font-size: 6.25vmin;
+  }
+
+  &--h2 {
+    font-size: 5.25vmin;
+    font-style: normal;
   }
 }
