@@ -1,5 +1,6 @@
-<dialog class="home home--visible" data-home>
-  <h1 class="title title__h0">De Stads Dichter</h1>
+<dialog class="home" data-home>
+  {{! add home--visible to show the home screen }}
+  <h1 class="title title--h0">De Stads Dichter</h1>
 
   <button class="cta cta__start" data-home-btn>
     <span>Start</span>
@@ -19,7 +20,8 @@
   <h1 class="title title--h1">Genereer een tekst</h1>
   <section method="POST" target="/api/poetry" class="generator">
     <fieldset class="fieldset">
-      <legend class="fieldset__legend">Stijl</legend>
+      <legend class="fieldset__legend title title--h2">Stijl</legend>
+      <p class="text text--big text--fw">Selecteer een thema</p>
       <label class="control control--type">
         <span class="control__label">Limerick</span>
         <input
@@ -27,6 +29,7 @@
           type="radio"
           name="type"
           value="limerick"
+          required
         />
       </label>
       <label class="control control--type">
@@ -36,6 +39,7 @@
           type="radio"
           name="type"
           value="elevenie"
+          required
         />
       </label>
       <label class="control control--type">
@@ -45,6 +49,7 @@
           type="radio"
           name="type"
           value="ollekebolleke"
+          required
         />
       </label>
       <label class="control control--type">
@@ -54,6 +59,7 @@
           type="radio"
           name="type"
           value="snelsonnet"
+          required
         />
       </label>
       <label class="control control--type">
@@ -67,6 +73,7 @@
           type="radio"
           name="type"
           value="romantisch drama plot"
+          required
         />
       </label>
       <label class="control control--type">
@@ -76,6 +83,7 @@
           type="radio"
           name="type"
           value="tragedie plot"
+          required
         />
       </label>
       <label class="control control--type">
@@ -85,19 +93,17 @@
           type="radio"
           name="type"
           value="manifest"
+          required
         />
       </label>
       <label class="control control--type">
         <span class="control__label">Essay</span>
-        <input class="control__input" type="radio" name="type" value="essay" />
-      </label>
-      <label class="control control--type">
-        <span class="control__label">Six Word Story</span>
         <input
           class="control__input"
           type="radio"
           name="type"
-          value="six word story"
+          value="essay"
+          required
         />
       </label>
       <label class="control control--type">
@@ -110,20 +116,31 @@
         />
       </label>
       <label class="control control--type">
+        <span class="control__label">Six Word Story</span>
+        <input
+          class="control__input"
+          type="radio"
+          name="type"
+          value="six word story"
+          required
+        />
+      </label>
+      <label class="control control--type">
         <span class="control__label">Toneel Opening Komedie</span>
         <input
           class="control__input"
           type="radio"
           name="type"
           value="toneel opening komedie"
+          required
         />
       </label>
     </fieldset>
 
     <label class="control control--theme" data-thema>
-      <span class="control__label">Thema(s)</span>
+      <span class="control__label title title--h2">Thema(s)</span>
       <input
-        class="control__input"
+        class="control__input control__input--theme"
         required
         type="text"
         id="theme"
@@ -132,13 +149,10 @@
       />
     </label>
 
-    <button class="cta" type="submit" data-submit>Genereer Tekst</button>
+    <button class="cta cta--hidden" type="submit" data-submit>Genereer Tekst</button>
   </section>
 
-  <a id="spinner" class="htmx-indicator" aria-busy="true">Bezig met genereren,
-    dit kan een minuut of langer duren..</a>
-  <a id="spinner-2" class="htmx-indicator" aria-busy="true">Bestaande tekst aan
-    het aanpassen, dit kan een minuut of langer duren..</a>
+  {{> loading }}
 
   <section id="output" data-outlet></section>
 

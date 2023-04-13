@@ -1,5 +1,7 @@
 // import "./components";
 
+// import loading from "./loading.js";
+
 const submit = document.querySelector("[data-submit]");
 const types = document.querySelectorAll(".control--type input");
 const theme = document.querySelector("[name='theme']");
@@ -11,10 +13,21 @@ const aside = document.querySelector("aside");
 
 let paragraphString;
 
+theme.addEventListener("input", (e) => {
+  if (e.target.value !== "") {
+    submit.classList.add("cta--visible");
+    submit.classList.remove("cta--hidden");
+  } else {
+    submit.classList.remove("cta--visible");
+    submit.classList.add("cta--hidden");
+  }
+});
+
 if (submit) {
   console.log(submit);
 
   const displayPoetry = (data) => {
+    loading(false);
     paragraphString = "";
 
     console.log("displayPoetry", data);
@@ -74,8 +87,8 @@ if (submit) {
   };
 
   const fetchPoetry = async () => {
+    loading(true);
     const activeType = Array.from(types).find((type) => type.checked);
-    console.log(activeType);
     const response = await fetch("/api/poetry", {
       method: "POST",
       headers: {

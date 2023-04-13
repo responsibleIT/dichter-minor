@@ -1,8 +1,17 @@
 .fieldset {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
-  padding: 10px;
-  &__legend {
+  gap: 20px;
+  // padding: 10px;
+  border: none;
+
+  &:valid {
+    & + .control {
+      opacity: 1;
+    }
+
+    & .control--type {
+      font-size: 20px;
+    }
   }
 }
