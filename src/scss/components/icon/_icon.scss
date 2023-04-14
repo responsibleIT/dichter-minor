@@ -1,16 +1,17 @@
 .icon {
-  &--loading {
-    height: 30px;
-    width: 30px;
-    border: 6px solid $prim-color;
-    border-radius: 50%;
-    border-bottom-color: transparent;
-    animation: spin 1s linear infinite;
-  }
+	&--loading {
+		height: 30px;
+		width: 30px;
+		aspect-ratio: 1;
+		border: 6px solid $prim-color;
+		border-radius: 50%;
+		border-bottom-color: transparent;
+		animation: spin 1s linear infinite;
+	}
 }
 
 @keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
+	to {
+		transform: rotate(360deg);
+	}
 }
