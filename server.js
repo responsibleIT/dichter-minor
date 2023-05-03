@@ -205,32 +205,18 @@ function api_rewrite(prev, oldWord, newWord) {
     return msgs;
 }
 
-function api_sint(recipient, hobby, keywords, roast) {
+function api_sint(recipient, hobby, keywords, gift) {
     let msgs = [];
-    let roastPrompt = "";
-
-    switch (roast) {
-        case 0:
-            roastPrompt = "Be very kind.";
-            break;
-        case 1:
-            roastPrompt = "Tease a bit";
-            break;
-        case 2:
-            roastPrompt = "Roast them, be extremely rude.";
-            break;
-    }
 
     msgs.push({
         "role": "system",
-        "content": "Write a Dutch saint nicholas poem. This poem has to tease the recipient a bit. Rhyme scheme is aa bb cc. It is mandatory for this to rhyme IN DUTCH based on the last word of the sentence!" +
-            "Exactly 4 lines please. A line has to end with a period. I want a newline character for each line."
+        "content": `Write a Dutch saint nicholas poem. Rhyme scheme is aa bb cc. It is mandatory for this to rhyme IN DUTCH based on the last word of the sentence!" +
+            "Exactly 4 lines please. A line has to end with a period. I want a newline character for each line.`
     });
 
     msgs.push({
         "role": "system",
-        "content": `Write a Dutch saint nicholas poem. The recipient is ${recipient} and their hobby is ${hobby}. Including these keywords in your poem: ${keywords}.
-         ${roastPrompt}`
+        "content": `The recipient is ${recipient} and their hobby is ${hobby}. Their gift is ${gift} Including these keywords in your poem: ${keywords}.`
     });
 
     msgs.push({
@@ -287,15 +273,15 @@ const start = async () => {
         ]),
         handler: async (request, reply) => {
             let recipient = request.query["recipient"];
+            let gift = request.query["gift"];
             let hobby = request.query["hobby"];
             let keywords = request.query["keywords"];
-            let roast = request.query["roast"];
 
-            if (!recipient || !hobby || !keywords, !roast) {
-                reply.status(400).send({"message": "Missing recipient, hobby, roast and/or keywords!"});
+            if (!recipient || !hobby || !keywords || !gift) {
+                reply.status(400).send({"message": "Missing recipient, hobby, gift and/or keywords!"});
             }
 
-            let prompts = api_sint(recipient, hobby, keywords, roast);
+            let prompts = api_sint(recipient, hobby, keywords, gift);
             let data = await getCompletion(prompts);
 
             reply.send({data: data});
@@ -399,13 +385,14 @@ const start = async () => {
 
         let recipient = request.body["recipient"];
         let hobby = request.body["hobby"];
+        let gift = request.body["gift"];
         let keywords = request.body["keywords"];
 
-        if (!recipient || !hobby || !keywords) {
+        if (!recipient || !hobby || !keywords || !gift) {
             reply.status(400).send({"message": "Missing recipient, hobby and/or keywords!"});
         }
 
-        let prompts = api_sint(recipient, hobby, keywords);
+        let prompts = api_sint(recipient, hobby, keywords, gift);
         let data = await getCompletion(prompts);
 
         return data.paragraph;

@@ -24,6 +24,11 @@
         </label>
 
         <label>
+            Cadeau
+            <input required type="text" id="gift" name="gift" placeholder="Cadeau"/>
+        </label>
+
+        <label>
             Hobby
             <input required type="text" id="hobby" name="hobby" placeholder="Hobby"/>
         </label>
@@ -31,15 +36,6 @@
         <label>
             Kenmerken
             <input required type="text" id="keywords" name="keywords" placeholder="Kenmerken"/>
-        </label>
-
-        <label>
-            Plagen
-            <select name="roast">
-                <option value="0">Lief</option>
-                <option value="1">Plagen</option>
-                <option value="2">Erg grof</option>
-            </select>
         </label>
 
         <button type="submit">Genereer Gedicht</button>
