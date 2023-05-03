@@ -1,50 +1,193 @@
 <!DOCTYPE html>
+
 <html data-theme="light" lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@1.*/css/pico.min.css">
+    <!-- stylesheet van framework -->
+    <!-- <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@1.*/css/pico.min.css"> -->
     <script src="https://unpkg.com/htmx.org@1.8.6"></script>
     <title><%= it.title %></title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
 </head>
+
 <body>
-<main class="container">
-    <nav aria-label="breadcrumb">
-        <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/docs">Docs</a></li>
-            <li><a href="/sint">Sint</a></li>
-        </ul>
-    </nav>
+    <svg 
+        aria-hidden="true"
+        focusable="false"
+        viewBox="0 0 274 350" 
+        fill="none" 
+        xmlns="http://www.w3.org/2000/svg">
+        <path d="M122.5 23.5C133.833 81.5 153.1 222.8 139.5 324M45.5 146C68.5 139 172 120 210.5 133M118.916 1.62012C-18.4999 126 3.00024 255.228 3.00003 329.5C2.99995 356.676 271.302 354.783 271.475 319.737C271.648 284.691 276.546 103.781 118.916 1.62012Z" 
+        stroke="black" 
+        stroke-width="8" 
+        stroke-linecap="round" 
+        stroke-linejoin="round"/>
+    </svg>
 
-    <form hx-post="/sint" hx-target="#output" hx-indicator="#spinner">
-        <label>
-            Ontvanger
-            <input required type="text" id="recipient" name="recipient" placeholder="Ontvanger"/>
-        </label>
+    <main class="container">
+        <h1>Sinterklaasgedicht</h1>        
 
-        <label>
-            Cadeau
-            <input required type="text" id="gift" name="gift" placeholder="Cadeau"/>
-        </label>
+        <form hx-post="/sint" hx-indicator="#spinner">
+            <p>Maak samen met de Digitale Stadsdichter jouw Sinterklaasgedicht. Vul de velden in en klik op de knop.</p>
 
-        <label>
-            Hobby
-            <input required type="text" id="hobby" name="hobby" placeholder="Hobby"/>
-        </label>
+            <label>
+                Voor wie is het gedicht?
+                <input required type="text" id="recipient" name="recipient" placeholder="Ontvanger"/>
+            </label>
 
-        <label>
-            Kenmerken
-            <input required type="text" id="keywords" name="keywords" placeholder="Kenmerken"/>
-        </label>
+            <label>
+                Wat is het cadeau?
+                <input required type="text" id="gift" name="gift" placeholder="Cadeau"/>
+            </label>
 
-        <button type="submit">Genereer Gedicht</button>
-    </form>
+            <label>
+                Welke hobbies heeft deze persoon?
+                <input required type="text" id="hobby" name="hobby" placeholder="Hobby"/>
+            </label>
 
-    <a id="spinner" class="htmx-indicator" aria-busy="true">Bezig met genereren, dit kan een minuut of langer
-        duren..</a>
+            <label>
+                Wat is kenmerkend aan deze persoon? 
+                <input required type="text" id="keywords" name="keywords" placeholder="Kenmerken"/>
+            </label>
 
-    <pre id="output"></pre>
-</main>
+            <button type="submit">Schrijf gedicht</button>
+        </form>
+
+        <p id="spinner" class="my-indicator" aria-busy="true">Bezig met schrijven, dit kan een minuut of langer
+            duren...
+            <iframe src="https://embed.lottiefiles.com/animation/60671" focusable="false"></iframe>
+        </p>
+
+        <div id="output">
+        
+        </div>
+    </main>
 </body>
+
 </html>
+
+<style>
+    * {
+        color: #333333;
+        box-sizing: border-box;
+        font-family: 'Atkinson Hyperlegible', sans-serif;
+        transition: 300ms;
+    }
+
+    *:focus-visible {
+        outline: 3px solid black!important;
+    }
+
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0;
+        height: 100vh;
+        background-color: #FFACDC;
+    }
+
+    svg {
+        position: absolute;
+        left: -15%;
+        z-index: -1;
+        height: 100%;
+        mix-blend-mode: soft-light;
+        opacity: 0.5;
+    }
+
+    main {
+        display: flex;
+        flex-direction: column;
+        width: 40vw;
+        min-width: 30em;
+        margin: auto;
+        padding: 64px;
+        background-color: #FFF7FC;
+    }
+
+    h1 {
+        width: 100%;
+        margin-bottom: 0;
+        text-align: center;
+        color: #FF0000;
+    }
+
+    p {
+        margin-top: 0;
+        text-align: center;
+    }
+
+    p:first-of-type {
+        margin-bottom: 16px;
+    }
+
+    form {
+        display: grid;
+        row-gap: 2em;
+        margin-bottom: 3em;
+    }
+
+    label {
+        display: flex;
+        flex-direction: column;
+    }
+
+    input, select {
+        height: 32px;
+        margin-top: 8px;
+        border-radius: 4px;
+        border: 1px solid;
+        text-indent: 8px;
+    }
+
+    button {
+        padding: 8px;
+        width: fit-content;
+        background-color: #ffa0da;
+        border: none;
+        border-radius: 2px;
+        box-shadow: -4px 4px #FF0000;
+        text-decoration: underline;
+        font-weight: bold;
+    }
+
+    button:hover {
+        color: white;
+        background-color: deeppink;
+        box-shadow: 0px 0px deeppink;
+
+    }
+
+    div {
+        line-height: 1.5;
+        font-size: 24px;
+    }
+
+    iframe {
+        height: 64px;
+        border: none;
+        pointer-events: none;
+    }
+
+    .container a {
+        display: none;
+    }
+
+    .my-indicator{
+        display:none;
+    }
+    
+    .htmx-request .my-indicator {
+        display:inline;
+    }
+    
+    .htmx-request.my-indicator {
+        display:inline;
+    }
+
+</style>
