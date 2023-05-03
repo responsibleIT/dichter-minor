@@ -228,20 +228,25 @@ function api_sint(recipient, hobby, keywords, gift) {
     return msgs;
 }
 
-function api_sint_continue(sentences){
+function api_sint_continue(sentences) {
     let msgs = [];
 
     msgs.push({
         "role": "system",
         "content": `Write the next sentence of the Dutch Saint Nicholas Poem at the end of this prompt. We're doing rhyming scheme AA, BB, CC. If you do the first A, B or C, I will finish it myself with a rhyming sentence. 
-        Do NOT rhyme yourself! Poem: ${sentences}.`
+        Do NOT rhyme yourself!.`
     });
+
+    msgs.push({
+        "role": "system",
+        "content": `The poem is: ${sentences}`
+    })
 
     msgs.push({
         "role": "system",
         "content": "Output format in a valid JSON like {\"paragraph\": \"this is a paragraph\"}. This JSON has to be parsable! Also use proper punctuation."
     });
-    
+
     return msgs;
 }
 
@@ -313,6 +318,11 @@ const start = async () => {
         ]),
         handler: async (request, reply) => {
             let sentences = request.query["sentences"];
+
+            if (!sentences) {
+                reply.status(400).send({"message": "Missing sentences!"});
+            }
+
             let prompts = api_sint_continue(sentences);
             let data = await getCompletion(prompts);
 
