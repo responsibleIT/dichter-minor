@@ -4,8 +4,6 @@ const bearerAuthPlugin = require('@fastify/bearer-auth')
 const {Configuration, OpenAIApi} = require("openai");
 const extractor = require("keyword-extractor");
 const crypto = require('crypto');
-const path = require('path');
-const fs = require('fs');
 require('dotenv').config();
 
 fastify.register(require('@fastify/cookie'), {
@@ -207,18 +205,32 @@ function api_rewrite(prev, oldWord, newWord) {
     return msgs;
 }
 
-function api_sint(recipient, hobby, keywords) {
+function api_sint(recipient, hobby, keywords, roast) {
     let msgs = [];
+    let roastPrompt = "";
+
+    switch (roast) {
+        case 0:
+            roastPrompt = "Be very kind.";
+            break;
+        case 1:
+            roastPrompt = "Tease a bit";
+            break;
+        case 2:
+            roastPrompt = "Roast them, be extremely rude.";
+            break;
+    }
 
     msgs.push({
         "role": "system",
         "content": "Write a Dutch saint nicholas poem. This poem has to tease the recipient a bit. Rhyme scheme is aa bb cc. It is mandatory for this to rhyme IN DUTCH based on the last word of the sentence!" +
-            "Exactly 2 lines please. A line has to end with a period. I want a newline character for each line."
+            "Exactly 4 lines please. A line has to end with a period. I want a newline character for each line."
     });
 
     msgs.push({
         "role": "system",
-        "content": `Write a Dutch saint nicholas poem. The recipient is ${recipient} and their hobby is ${hobby}. Tease ${recipient} about these: ${keywords}.`
+        "content": `Write a Dutch saint nicholas poem. The recipient is ${recipient} and their hobby is ${hobby}. Including these keywords in your poem: ${keywords}.
+         ${roastPrompt}`
     });
 
     msgs.push({
@@ -277,12 +289,13 @@ const start = async () => {
             let recipient = request.query["recipient"];
             let hobby = request.query["hobby"];
             let keywords = request.query["keywords"];
+            let roast = request.query["roast"];
 
-            if (!recipient || !hobby || !keywords) {
-                reply.status(400).send({"message": "Missing recipient, hobby and/or keywords!"});
+            if (!recipient || !hobby || !keywords, !roast) {
+                reply.status(400).send({"message": "Missing recipient, hobby, roast and/or keywords!"});
             }
 
-            let prompts = api_sint(recipient, hobby, keywords);
+            let prompts = api_sint(recipient, hobby, keywords, roast);
             let data = await getCompletion(prompts);
 
             reply.send({data: data});

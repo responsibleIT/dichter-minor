@@ -33,10 +33,20 @@
             <input required type="text" id="keywords" name="keywords" placeholder="Kenmerken"/>
         </label>
 
+        <label>
+            Plagen
+            <select name="roast">
+                <option value="0">Lief</option>
+                <option value="1">Plagen</option>
+                <option value="2">Erg grof</option>
+            </select>
+        </label>
+
         <button type="submit">Genereer Gedicht</button>
     </form>
 
-    <a id="spinner" class="htmx-indicator" aria-busy="true">Bezig met genereren, dit kan een minuut of langer duren..</a>
+    <a id="spinner" class="htmx-indicator" aria-busy="true">Bezig met genereren, dit kan een minuut of langer
+        duren..</a>
 
     <pre id="output"></pre>
 </main>
