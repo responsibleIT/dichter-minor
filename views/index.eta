@@ -13,6 +13,7 @@
         <ul>
             <li><a href="/">Home</a></li>
             <li><a href="/docs">Docs</a></li>
+            <li><a href="/sint">Sint</a></li>
         </ul>
     </nav>
 
@@ -21,7 +22,7 @@
             Type
             <select name="type">
                 <option value="limerick">Limerick</option>
-                <option value="elevenie">Elevenie</option>
+                <option value="elevenie">Elfje</option>
                 <option value="ollekebolleke">Ollekebolleke</option>
                 <option value="snelsonnet">Snelsonnet</option>
                 <option value="haiku">Haiku</option>
@@ -32,6 +33,7 @@
                 <option value="six word story">Six Word Story</option>
                 <option value="toneel opening tragedie">Toneel Opening Tragedie</option>
                 <option value="toneel opening komedie">Toneel Opening Komedie</option>
+                <option value="sinterklaasgedicht">Sinterklaasgedicht</option>
             </select>
         </label>
         <label>
