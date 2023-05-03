@@ -12,7 +12,7 @@
 <% let keyword = it.data.keywords[k].keyword; %>
 <% if (word === keyword && !isBolded) { %>
 
-<select hx-indicator="#spinner-2" name="<%= word %>" hx-get="/cont" hx-target="#output" style="display: inline-block; width: fit-content;">
+<select hx-indicator="#spinner-2" name="<%= word %>" hx-get="/cont" hx-swap="#output" style="display: inline-block; width: fit-content;">
     <option value="<%= word %>" selected><%= word %></option>
     <% for (let l = 0; l < it.data.keywords[k].alternatives.length; l++) { %>
     <option value="<%= it.data.keywords[k].alternatives[l] %>"><%= it.data.keywords[k].alternatives[l] %></option>

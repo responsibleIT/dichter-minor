@@ -228,6 +228,23 @@ function api_sint(recipient, hobby, keywords, gift) {
     return msgs;
 }
 
+function api_sint_continue(sentences){
+    let msgs = [];
+
+    msgs.push({
+        "role": "system",
+        "content": `Write the next sentence of the Dutch Saint Nicholas Poem at the end of this prompt. We're doing rhyming scheme AA, BB, CC. If you do the first A, B or C, I will finish it myself with a rhyming sentence. 
+        Do NOT rhyme yourself! Poem: ${sentences}.`
+    });
+
+    msgs.push({
+        "role": "system",
+        "content": "Output format in a valid JSON like {\"paragraph\": \"this is a paragraph\"}. This JSON has to be parsable! Also use proper punctuation."
+    });
+    
+    return msgs;
+}
+
 async function getCompletion(prompts, isTurbo) {
     const completion = await openai.createChatCompletion({
         model: isTurbo ? "gpt-3.5-turbo" : "gpt-4",
@@ -287,6 +304,21 @@ const start = async () => {
             reply.send({data: data});
         }
     });
+
+    fastify.route({
+        method: 'GET',
+        url: '/api/sintcontinue',
+        preHandler: fastify.auth([
+            fastify.verifyBearerAuth
+        ]),
+        handler: async (request, reply) => {
+            let sentences = request.query["sentences"];
+            let prompts = api_sint_continue(sentences);
+            let data = await getCompletion(prompts);
+
+            reply.send({data: data});
+        }
+    })
 
     fastify.route({
         method: 'GET',
@@ -392,10 +424,14 @@ const start = async () => {
             reply.status(400).send({"message": "Missing recipient, hobby and/or keywords!"});
         }
 
-        let prompts = api_sint(recipient, hobby, keywords, gift);
-        let data = await getCompletion(prompts);
+        try {
+            let prompts = api_sint(recipient, hobby, keywords, gift);
+            let data = await getCompletion(prompts);
 
-        return data.paragraph;
+            return data.paragraph;
+        } catch (e) {
+            return "Kan geen gedicht schrijven, probeer het nog een keer!";
+        }
     });
 
     fastify.get('/api', async (request, reply) => {
