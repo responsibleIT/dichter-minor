@@ -24,8 +24,8 @@
         </label>
 
         <label>
-            Cadeau
-            <input required type="text" id="gift" name="gift" placeholder="Cadeau"/>
+            Hobby
+            <input required type="text" id="hobby" name="hobby" placeholder="Hobby"/>
         </label>
 
         <label>

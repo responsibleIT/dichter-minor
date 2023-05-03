@@ -207,7 +207,7 @@ function api_rewrite(prev, oldWord, newWord) {
     return msgs;
 }
 
-function api_sint(recipient, gift, keywords) {
+function api_sint(recipient, hobby, keywords) {
     let msgs = [];
 
     msgs.push({
@@ -218,7 +218,7 @@ function api_sint(recipient, gift, keywords) {
 
     msgs.push({
         "role": "system",
-        "content": `Write a Dutch saint nicholas poem. The recipient is ${recipient} and the gift is ${gift}. Tease ${recipient} about these: ${keywords}.`
+        "content": `Write a Dutch saint nicholas poem. The recipient is ${recipient} and their hobby is ${hobby}. Tease ${recipient} about these: ${keywords}.`
     });
 
     msgs.push({
@@ -275,14 +275,14 @@ const start = async () => {
         ]),
         handler: async (request, reply) => {
             let recipient = request.query["recipient"];
-            let gift = request.query["gift"];
+            let hobby = request.query["hobby"];
             let keywords = request.query["keywords"];
 
-            if (!recipient || !gift || !keywords) {
-                reply.status(400).send({"message": "Missing recipient, gift and/or keywords!"});
+            if (!recipient || !hobby || !keywords) {
+                reply.status(400).send({"message": "Missing recipient, hobby and/or keywords!"});
             }
 
-            let prompts = api_sint(recipient, gift, keywords);
+            let prompts = api_sint(recipient, hobby, keywords);
             let data = await getCompletion(prompts);
 
             reply.send({data: data});
@@ -385,14 +385,14 @@ const start = async () => {
         }
 
         let recipient = request.body["recipient"];
-        let gift = request.body["gift"];
+        let hobby = request.body["hobby"];
         let keywords = request.body["keywords"];
 
-        if (!recipient || !gift || !keywords) {
-            reply.status(400).send({"message": "Missing recipient, gift and/or keywords!"});
+        if (!recipient || !hobby || !keywords) {
+            reply.status(400).send({"message": "Missing recipient, hobby and/or keywords!"});
         }
 
-        let prompts = api_sint(recipient, gift, keywords);
+        let prompts = api_sint(recipient, hobby, keywords);
         let data = await getCompletion(prompts);
 
         return data.paragraph;
