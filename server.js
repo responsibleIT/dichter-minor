@@ -21,7 +21,7 @@ fastify.register(require('@fastify/formbody'));
 
 fastify.register(require('@fastify/cors'));
 
-fastify.register(import('@fastify/rate-limit'), {
+fastify.register(require('@fastify/rate-limit'), {
     max: 1000,
     timeWindow: '1 minute'
 });
@@ -266,138 +266,6 @@ const start = async () => {
         .register(auth)
         .register(bearerAuthPlugin, {addHook: false, keys, verifyErrorLogLevel: 'debug'});
 
-    fastify.route({
-        method: 'GET',
-        url: '/api/poetry',
-        preHandler: fastify.auth([
-            fastify.verifyBearerAuth
-        ]),
-        handler: async (request, reply) => {
-            let poemType = poemTypes[request.query["type"]] || Object.keys(poemTypes).find(key => poemTypes[key] === request.query["type"]);
-            let theme = request.query["theme"];
-
-            if (!poemType || !theme) {
-                reply.status(400).send({"message": "Missing theme or poem type"});
-            }
-
-            let prompts = api_generate(poemType, theme);
-            let data = await getCompletion(prompts);
-
-            reply.send({data: data});
-        }
-    });
-
-    fastify.route({
-        method: 'GET',
-        url: '/api/sint',
-        preHandler: fastify.auth([
-            fastify.verifyBearerAuth
-        ]),
-        handler: async (request, reply) => {
-            let recipient = request.query["recipient"];
-            let gift = request.query["gift"];
-            let hobby = request.query["hobby"];
-            let keywords = request.query["keywords"];
-
-            if (!recipient || !hobby || !keywords || !gift) {
-                reply.status(400).send({"message": "Missing recipient, hobby, gift and/or keywords!"});
-            }
-
-            let prompts = api_sint(recipient, hobby, keywords, gift);
-            let data = await getCompletion(prompts);
-
-            reply.send({data: data});
-        }
-    });
-
-    fastify.route({
-        method: 'GET',
-        url: '/api/sintcontinue',
-        preHandler: fastify.auth([
-            fastify.verifyBearerAuth
-        ]),
-        handler: async (request, reply) => {
-            let sentences = request.query["sentences"];
-
-            if (!sentences) {
-                reply.status(400).send({"message": "Missing sentences!"});
-            }
-
-            let prompts = api_sint_continue(sentences);
-            let data = await getCompletion(prompts);
-
-            reply.send({data: data});
-        }
-    })
-
-    fastify.route({
-        method: 'GET',
-        url: '/api/types',
-        preHandler: fastify.auth([
-            fastify.verifyBearerAuth
-        ]),
-        handler: async (request, reply) => {
-            reply.send({data: poemTypes});
-        }
-    });
-
-    fastify.route({
-        method: 'POST',
-        url: '/api/keywords',
-        preHandler: fastify.auth([
-            fastify.verifyBearerAuth
-        ]),
-        handler: async (request, reply) => {
-            try {
-                let body = JSON.parse(request.body);
-                const extraction_result =
-                    extractor.extract(body.data.paragraph, {
-                        language: "dutch",
-                        remove_digits: true,
-                        return_changed_case: true,
-                        remove_duplicates: true,
-                        return_max_ngrams: 5
-                    });
-
-                let prompts = api_alt_gen(String(extraction_result));
-                let data = await getCompletion(prompts, false);
-                data["paragraph"] = body.data.paragraph;
-
-                reply.send({data: data});
-            } catch (e) {
-                console.log(e);
-                reply.status(400).send({"message": "Invalid JSON"});
-            }
-        }
-    });
-
-    fastify.route({
-        method: 'POST',
-        url: '/api/rewrite',
-        preHandler: fastify.auth([
-            fastify.verifyBearerAuth
-        ]),
-        handler: async (request, reply) => {
-            try {
-                let oldWord = request.query["old"];
-                let newWord = request.query["new"];
-
-                if (!oldWord || !newWord) {
-                    reply.status(400).send({"message": "Missing old and / or new word query parameters"});
-                }
-
-                let body = JSON.parse(request.body);
-                let prompts = api_rewrite(body.data.paragraph, oldWord, newWord);
-                let data = await getCompletion(prompts);
-
-                reply.send({data: data});
-            } catch (e) {
-                console.log(e);
-                reply.status(400).send({"message": "Invalid JSON"});
-            }
-        }
-    });
-
     fastify.get('/', async (request, reply) => {
         const nonce = crypto.randomBytes(16).toString('base64');
         reply
@@ -408,45 +276,92 @@ const start = async () => {
                 sameSite: true,
                 signed: true,
             })
-            .view('/views/index.eta', {title: 'Home | Stadsdichter', bk: process.env.BK});
+            .redirect('/consensus');
     });
 
-    fastify.get('/docs', async (request, reply) => {
-        reply.view('/views/docs.eta', {title: 'Docs | Stadsdichter', bk: process.env.BK, host: process.env.ENDPOINT});
-    });
-
-    fastify.get('/sint', async (request, reply) => {
-        reply.view('/views/sint.eta', {title: 'Docs | Sint', bk: process.env.BK, host: process.env.ENDPOINT});
-    });
-
-    fastify.post('/sint', async (request, reply) => {
+    fastify.get('/consensus', async (request, reply) => {
         let cookie = request.cookies.__sesh;
         if (!cookie || !fastify.unsignCookie(cookie).valid) {
             reply.status(401).send({"message": "Unauthorized"});
-        }
+        } else {
+            let statement = "Wij hebben met belangstelling kennisgenomen van de uitspraak van het college." +
+                "Bij bijzondere omstandigheden zijn wij van mening dat het inzetten van proctoringsoftware bij high stake toetsing alsnog te gerechtvaardigd is.\n" +
+                "Gedurende de coronaperiode hebben wij gebruik gemaakt van proctoringsoftware. Deze software hebben wij zorgvuldig in lijn met ons beleid op integrale veiligheid ingericht. Ons zijn geen problemen of klachten bekend zoals in deze zaak voorlagen.\n" +
+                "In de toekomst zullen wij in vooraf bepaalde specifieke gevallen gebruik blijven maken van proctoringsoftware waarbij wij altijd zeer zorgvuldig zullen handelen"
 
-        let recipient = request.body["recipient"];
-        let hobby = request.body["hobby"];
-        let gift = request.body["gift"];
-        let keywords = request.body["keywords"];
-
-        if (!recipient || !hobby || !keywords || !gift) {
-            reply.status(400).send({"message": "Missing recipient, hobby and/or keywords!"});
-        }
-
-        try {
-            let prompts = api_sint(recipient, hobby, keywords, gift);
-            let data = await getCompletion(prompts);
-
-            return data.paragraph;
-        } catch (e) {
-            return "Kan geen gedicht schrijven, probeer het nog een keer!";
+            reply.view('/views/consensus.eta', {
+                title: 'Consensus',
+                bk: process.env.BK,
+                host: process.env.ENDPOINT,
+                statement: statement
+            });
         }
     });
 
-    fastify.get('/api', async (request, reply) => {
-        reply.redirect('/docs');
+    fastify.post('/consensus', async (request, reply) => {
+        let cookie = request.cookies.__sesh;
+        if (!cookie || !fastify.unsignCookie(cookie).valid) {
+            reply.status(401).send({"message": "Unauthorized"});
+        } else {
+            let statement = request.body.statement
+
+            let msgs = [];
+            msgs.push({
+                "role": "user",
+                "content": `De stelling is : ${statement} Kan jij een argument voor, tegen en voor gegeven een voorwaarde verzinnen bij deze stelling?.
+            Verzin negen argumenten. Drie per voor, tegen, en voorwaarde. Hou ze kort en in het nederlands! Max 10 woorden per argument.
+            Kun je in de prompt voor de argumenten verwerken dat hij de argumenten moet baseren op deze onderwijswaarden?: Onderwijswaarden: rechtvaardigheid (gelijke kansen, inclusiviteit, integriteit), 
+            menselijkheid (sociale samenhang, respect, veiligheid, welzijn), 
+            autonomie (zelfbeschikking, privacy, onafhankelijkheid, vrijheid).
+            Maak de argumenten grammaticaal correct en passend in de context van de statement wanneer deze wordt geplaatst.
+            Do not include any explanations, only provide a RFC8259 compliant JSON response  following this format without deviation.
+                        Like {eens: ["eens argument"], oneens: ["oneens argument"], mits: ["mits argument"]}.`
+            });
+
+            const completion = await openai.createChatCompletion({
+                model: "gpt-4",
+                messages: msgs,
+            });
+
+            let args = JSON.parse(completion.data.choices[0].message.content)
+            return `<option disabled selected>Selecteer een argument</option>
+                <optgroup label="eens">
+                ${args.eens.map((arg) => `<option>${arg}</option>`)}
+                </optgroup>
+                <optgroup label="oneens">  
+                ${args.oneens.map((arg) => `<option>${arg}</option>`)}
+                </optgroup>
+                <optgroup label="mits">
+                ${args.mits.map((arg) => `<option>${arg}</option>`)}
+                </optgroup>`
+        }
     });
+
+    fastify.post('/consensusrewrite', async (request, reply) => {
+        let cookie = request.cookies.__sesh;
+        if (!cookie || !fastify.unsignCookie(cookie).valid) {
+            reply.status(401).send({"message": "Unauthorized"});
+        } else {
+            let statement = request.body.statement;
+            let msgs = [];
+            msgs.push({
+                "role": "user",
+                "content": `Kan je deze tekst met de toegevoegde voor- en tegenargumenten herschrijven, zodat het lekker leest 
+            en herschrijf de mening in de tekst gebaseerd op de hoeveelheid voor- en tegenargumenten? 
+            Als er veel tegenargumenten worden gegeven, wordt heel negatief. Doe dit andersom ook voor de hoeveelheid argumenten voor.
+            Houdt het kort!: ${statement}.
+            `
+            });
+
+            const completion = await openai.createChatCompletion({
+                model: "gpt-4",
+                messages: msgs,
+            });
+
+            return completion.data.choices[0].message.content
+        }
+    });
+
 
     fastify.post('/', async (request, reply) => {
         let cookie = request.cookies.__sesh;

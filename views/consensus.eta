@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html data-theme="light" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@1.*/css/pico.min.css">
+    <script src="https://unpkg.com/htmx.org@1.8.6"></script>
+    <title><%= it.title %></title>
+</head>
+<style>
+    .fade-me-out.htmx-swapping {
+        opacity: 0;
+        transition: opacity 1s ease-in-out;
+    }
+</style>
+<body>
+<main class="container">
+    <nav aria-label="breadcrumb">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/consensus">Consensus</a></li>
+        </ul>
+    </nav>
+
+    <h1>Consensus</h1>
+    <p class="fade-me-out" id="tekst">Wij hebben met belangstelling kennisgenomen van de uitspraak van het college. Bij
+        bijzondere
+        omstandigheden kan het inzetten van proctoringsoftware bij high stake toetsing alsnog te rechtvaardigen zijn.</p>
+    <form id="consensus" hx-indicator="#spinner" hx-target="#arguments" hx-swap="innerHTML">
+        <input type="hidden" id="statement-input" name="statement" value="<%= it.statement %>">
+        <button id="opinion" class="select" name="opinion" hx-post="/consensus">Genereer argumenten</button>
+        <select id="arguments" class="select" name="argument" style="display: none" hx-post="/consensusrewrite"
+                hx-target="#tekst" hx-swap="innerHTML swap:1s">
+        </select>
+    </form>
+    <a id="spinner" class="htmx-indicator" aria-busy="true">Bezig..</a>
+</main>
+<script>
+    let opinionSelector = document.getElementById("opinion");
+    let argumentSelector = document.getElementById("arguments");
+    let statementInput = document.getElementById("statement-input");
+    let tekst = document.getElementById("tekst");
+    opinionSelector.addEventListener("click", () => {
+        argumentSelector.style.display = "block";
+        opinionSelector.disabled = true;
+    });
+
+    argumentSelector.addEventListener("change", () => {
+        let arg = argumentSelector.options[argumentSelector.selectedIndex].text;
+
+        //Check which optgroup the selected option is in
+        if (argumentSelector.options[argumentSelector.selectedIndex].parentNode.label === "eens") {
+            arg = ". Argument voor: " + arg.toLowerCase();
+        } else if (argumentSelector.options[argumentSelector.selectedIndex].parentNode.label === "oneens") {
+            arg = ". Argument tegen: " + arg.toLowerCase();
+        } else if (argumentSelector.options[argumentSelector.selectedIndex].parentNode.label === "mits") {
+            arg = ". Argument voor, mits: " + arg.toLowerCase();
+        }
+
+        let split_statement = tekst.innerHTML.split("…");
+        let statement = split_statement[0];
+
+        tekst.innerHTML = statement + arg;
+        statementInput.value = tekst.innerHTML;
+
+        opinionSelector.value = 0;
+        argumentSelector.value = 0;
+        argumentSelector.style.display = "none";
+        argumentSelector.innerHTML = "";
+        opinionSelector.disabled = false;
+    });
+</script>
+</body>
+</html>
+
