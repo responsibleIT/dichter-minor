@@ -12,7 +12,6 @@
     <nav aria-label="breadcrumb">
         <ul>
             <li><a href="/">Home</a></li>
-            <li><a href="/consensus">Consensus</a></li>
         </ul>
     </nav>
 

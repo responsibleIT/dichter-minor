@@ -27,7 +27,7 @@ fastify.register(require('@fastify/rate-limit'), {
 });
 
 fastify.setNotFoundHandler((request, reply) => {
-    reply.status(404).view('/views/error.eta', {title: 'Error | Stadsdichter', authenticated: false});
+    reply.status(404).view('/views/error.eta', {title: 'Error | Consensus Machine', authenticated: false});
 });
 
 const configuration = new Configuration({
@@ -190,66 +190,6 @@ function api_alt_gen(keywords) {
     return msgs;
 }
 
-function api_rewrite(prev, oldWord, newWord) {
-    let msgs = [];
-    msgs.push({
-        "role": "user",
-        "content": `Can you replace ${oldWord} with ${newWord} in this text?: ${prev} Try to make it fit and rewrite the text starting from the replaced word. Change it up a bit, make something cool. Output in Dutch please!`
-    });
-
-    msgs.push({
-        "role": "system",
-        "content": "Output format in a valid JSON like {paragraph: '...'} Also use proper punctuation, no weird characters like newlines."
-    });
-
-    return msgs;
-}
-
-function api_sint(recipient, hobby, keywords, gift) {
-    let msgs = [];
-
-    msgs.push({
-        "role": "system",
-        "content": `Write a Dutch saint nicholas poem. Rhyme scheme is aa bb cc. It is mandatory for this to rhyme IN DUTCH based on the last word of the sentence!" +
-            "Exactly 4 lines please. A line has to end with a period. I want a newline character for each line.`
-    });
-
-    msgs.push({
-        "role": "system",
-        "content": `The recipient is ${recipient} and their hobby is ${hobby}. Their gift is ${gift} Including these keywords in your poem: ${keywords}.`
-    });
-
-    msgs.push({
-        "role": "system",
-        "content": "Output format in a valid JSON like {\"paragraph\": \"this is a paragraph\"}. This JSON has to be parsable! Also use proper punctuation."
-    });
-
-
-    return msgs;
-}
-
-function api_sint_continue(sentences) {
-    let msgs = [];
-
-    msgs.push({
-        "role": "system",
-        "content": `Write the next sentence of the Dutch Saint Nicholas Poem at the end of this prompt. We're doing rhyming scheme AA, BB, CC. If you do the first A, B or C, I will finish it myself with a rhyming sentence. 
-        Do NOT rhyme yourself!.`
-    });
-
-    msgs.push({
-        "role": "system",
-        "content": `The poem is: ${sentences}`
-    })
-
-    msgs.push({
-        "role": "system",
-        "content": "Output format in a valid JSON like {\"paragraph\": \"this is a paragraph\"}. This JSON has to be parsable! Also use proper punctuation."
-    });
-
-    return msgs;
-}
-
 async function getCompletion(prompts, isTurbo) {
     const completion = await openai.createChatCompletion({
         model: isTurbo ? "gpt-3.5-turbo" : "gpt-4",
@@ -268,6 +208,10 @@ const start = async () => {
 
     fastify.get('/', async (request, reply) => {
         const nonce = crypto.randomBytes(16).toString('base64');
+        let statement = "Wij hebben met belangstelling kennisgenomen van de uitspraak van het college." +
+            "Bij bijzondere omstandigheden zijn wij van mening dat het inzetten van proctoringsoftware bij high stake toetsing alsnog te gerechtvaardigd is.\n" +
+            "Gedurende de coronaperiode hebben wij gebruik gemaakt van proctoringsoftware. Deze software hebben wij zorgvuldig in lijn met ons beleid op integrale veiligheid ingericht. Ons zijn geen problemen of klachten bekend zoals in deze zaak voorlagen.\n" +
+            "In de toekomst zullen wij in vooraf bepaalde specifieke gevallen gebruik blijven maken van proctoringsoftware waarbij wij altijd zeer zorgvuldig zullen handelen"
         reply
             .cookie('__sesh', nonce, {
                 path: '/',
@@ -276,27 +220,14 @@ const start = async () => {
                 sameSite: true,
                 signed: true,
             })
-            .redirect('/consensus');
-    });
-
-    fastify.get('/consensus', async (request, reply) => {
-        let cookie = request.cookies.__sesh;
-        if (!cookie || !fastify.unsignCookie(cookie).valid) {
-            reply.status(401).send({"message": "Unauthorized"});
-        } else {
-            let statement = "Wij hebben met belangstelling kennisgenomen van de uitspraak van het college." +
-                "Bij bijzondere omstandigheden zijn wij van mening dat het inzetten van proctoringsoftware bij high stake toetsing alsnog te gerechtvaardigd is.\n" +
-                "Gedurende de coronaperiode hebben wij gebruik gemaakt van proctoringsoftware. Deze software hebben wij zorgvuldig in lijn met ons beleid op integrale veiligheid ingericht. Ons zijn geen problemen of klachten bekend zoals in deze zaak voorlagen.\n" +
-                "In de toekomst zullen wij in vooraf bepaalde specifieke gevallen gebruik blijven maken van proctoringsoftware waarbij wij altijd zeer zorgvuldig zullen handelen"
-
-            reply.view('/views/consensus.eta', {
-                title: 'Consensus',
+            .view('/views/consensus.eta', {
+                title: 'Consensus Machine',
                 bk: process.env.BK,
                 host: process.env.ENDPOINT,
                 statement: statement
             });
-        }
     });
+
 
     fastify.post('/consensus', async (request, reply) => {
         let cookie = request.cookies.__sesh;
@@ -348,7 +279,6 @@ const start = async () => {
                 "role": "user",
                 "content": `Kan je deze tekst met de toegevoegde voor- en tegenargumenten herschrijven, zodat het lekker leest 
             en herschrijf de mening in de tekst gebaseerd op de hoeveelheid voor- en tegenargumenten? 
-            Als er veel tegenargumenten worden gegeven, wordt heel negatief. Doe dit andersom ook voor de hoeveelheid argumenten voor.
             Houdt het kort!: ${statement}.
             `
             });
@@ -362,53 +292,6 @@ const start = async () => {
         }
     });
 
-
-    fastify.post('/', async (request, reply) => {
-        let cookie = request.cookies.__sesh;
-        if (!cookie || !fastify.unsignCookie(cookie).valid) {
-            reply.status(401).send({"message": "Unauthorized"});
-        } else {
-            let poemType = poemTypes[request.body["type"]] || Object.keys(poemTypes).find(key => poemTypes[key] === request.body["type"]);
-            let theme = request.body["theme"];
-
-            if (!poemType || !theme) {
-                reply.status(400).send({"message": "Missing theme or poem type"});
-            }
-
-            let prompts = api_generate(poemType, theme);
-            let data = await getCompletion(prompts);
-            let paragraph = data.paragraph;
-            const extraction_result =
-                extractor.extract(paragraph, {
-                    language: "dutch",
-                    remove_digits: true,
-                    return_changed_case: true,
-                    remove_duplicates: true,
-                    return_max_ngrams: 5
-                });
-
-            prompts = api_alt_gen(String(extraction_result));
-            data = await getCompletion(prompts, true);
-            data["paragraph"] = paragraph;
-
-            return reply.view('/views/output.eta', {data: data});
-        }
-    });
-
-    fastify.get('/cont', async (request, reply) => {
-        let cookie = request.cookies.__sesh;
-        if (!cookie || !fastify.unsignCookie(cookie).valid) {
-            reply.status(401).send({"message": "Unauthorized"});
-        } else {
-            let oldWord = Object.keys(request.query)[0];
-            let newWord = Object.values(request.query)[0];
-
-            let prompts = continuePoem(oldWord, newWord);
-            let data = await getCompletion(prompts);
-
-            return reply.view('/views/output.eta', {data: data});
-        }
-    });
 
     try {
         await fastify.listen({host: "0.0.0.0", port: process.env.PORT || 3000})
