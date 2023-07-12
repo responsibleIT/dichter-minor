@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@1.*/css/pico.min.css">
     <script src="https://unpkg.com/htmx.org@1.8.6"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <title><%= it.title %></title>
 </head>
 <style>
@@ -15,59 +15,96 @@
 </style>
 <body>
 <main class="container">
-    <nav aria-label="breadcrumb">
-        <ul>
-            <li><a href="/">Consensus</a></li>
-        </ul>
-    </nav>
-
     <h1>Consensus</h1>
-    <p class="fade-me-out" id="tekst">Wij hebben met belangstelling kennisgenomen van de uitspraak van het college. Bij
-        bijzondere
-        omstandigheden kan het inzetten van proctoringsoftware bij high stake toetsing alsnog te rechtvaardigen zijn.</p>
-    <form id="consensus" hx-indicator="#spinner" hx-target="#arguments" hx-swap="innerHTML">
-        <input type="hidden" id="statement-input" name="statement" value="<%= it.statement %>">
-        <button id="opinion" class="select" name="opinion" hx-post="/consensus">Genereer argumenten</button>
-        <select id="arguments" class="select" name="argument" style="display: none" hx-post="/consensusrewrite"
-                hx-target="#tekst" hx-swap="innerHTML swap:1s">
-        </select>
+    <form id="main-form" class="fade-me-out" hx-indicator="#spinner" hx-target="#main-form" hx-swap="innerHTML" hx-post="/initarg"
+          x-data="{open: false}">
+        <div x-show="open">
+            <fieldset style="display: flex" id="opinion">
+                <div>
+                    <input type="radio" id="eens" name="opinion" value="te rechtvaardigen is, omdat …" hx-post="/initarg">
+                    <label for="eens"
+                           style="border: solid 1px; background: black; color: white; padding:1px; cursor:pointer;">te
+                        rechtvaardigen is, omdat … </label>
+                </div>
+                <div>
+                    <input type="radio" id="oneens" name="opinion" value="niet gerechtvaardigd is, want …" hx-post="/initarg">
+                    <label for="oneens"
+                           style="border: solid 1px; background: black; color: white; padding:1px; cursor:pointer;">
+                        niet gerechtvaardigd is, want … </label>
+                </div>
+                <div>
+                    <input type="radio" id="mits" name="opinion" value="te rechtvaardigen is, mits …" hx-post="/initarg">
+                    <label for="mits"
+                           style="border: solid 1px; background: black; color: white; padding:1px; cursor:pointer;">te
+                        rechtvaardigen is, mits …</label>
+                </div>
+            </fieldset>
+        </div>
+        <div id="statement-text">
+            Wij hebben met belangstelling kennisgenomen van de uitspraak van het college. Bij
+            bijzondere
+            omstandigheden kan het inzetten van proctoringsoftware bij high stake toetsing alsnog
+            <span x-on:click="open = ! open"
+                  style="border: solid 1px; background: black; color: white; padding:1px; cursor:pointer;">te rechtvaardigen is</span>
+            .
+            <!--            <select id="opinion" hx-post="/initarg">-->
+            <!--                <option selected disabled>te rechtvaardigen is.</option>-->
+            <!--                <option>te rechtvaardigen is, omdat …</option>-->
+            <!--                <option>niet gerechtvaardigd is, want …</option>-->
+            <!--                <option>te rechtvaardigen is, mits …</option>-->
+            <!--            </select>-->
+            <input type="hidden" id="statement-input" name="statement" value=``>
+        </div>
     </form>
-    <a id="spinner" class="htmx-indicator" aria-busy="true">Bezig..</a>
+    <!--    <form id="consensus" hx-indicator="#spinner" hx-target="#arguments" hx-swap="innerHTML">-->
+    <!--        <input type="hidden" id="statement-input" name="statement" value="<%= it.statement %>">-->
+    <!--        <button id="opinion" class="select" name="opinion" hx-post="/consensus">Genereer argumenten</button>-->
+    <!--        <select id="arguments" class="select" name="argument" style="display: none" hx-post="/consensusrewrite"-->
+    <!--                hx-target="#tekst" hx-swap="innerHTML swap:1s">-->
+    <!--        </select>-->
+    <!--    </form>-->
+    <a id="spinner" class="htmx-indicator" aria-busy="true">Bezig...</a>
 </main>
 <script>
-    let opinionSelector = document.getElementById("opinion");
-    let argumentSelector = document.getElementById("arguments");
-    let statementInput = document.getElementById("statement-input");
-    let tekst = document.getElementById("tekst");
-    opinionSelector.addEventListener("click", () => {
-        argumentSelector.style.display = "block";
-        opinionSelector.disabled = true;
+    document.getElementById("opinion").addEventListener("change", () => {
+        let selected = document.querySelector('input[name="opinion"]:checked').value;
+        document.getElementById("statement-input").value = (document.getElementById("statement-text").innerHTML.split("<")[0] + selected);
+        console.log(document.getElementById("statement-input").value);
     });
 
-    argumentSelector.addEventListener("change", () => {
-        let arg = argumentSelector.options[argumentSelector.selectedIndex].text;
-
-        //Check which optgroup the selected option is in
-        if (argumentSelector.options[argumentSelector.selectedIndex].parentNode.label === "eens") {
-            arg = ". Argument voor: " + arg.toLowerCase();
-        } else if (argumentSelector.options[argumentSelector.selectedIndex].parentNode.label === "oneens") {
-            arg = ". Argument tegen: " + arg.toLowerCase();
-        } else if (argumentSelector.options[argumentSelector.selectedIndex].parentNode.label === "mits") {
-            arg = ". Argument voor, mits: " + arg.toLowerCase();
-        }
-
-        let split_statement = tekst.innerHTML.split("…");
-        let statement = split_statement[0];
-
-        tekst.innerHTML = statement + arg;
-        statementInput.value = tekst.innerHTML;
-
-        opinionSelector.value = 0;
-        argumentSelector.value = 0;
-        argumentSelector.style.display = "none";
-        argumentSelector.innerHTML = "";
-        opinionSelector.disabled = false;
-    });
+    // let opinionSelector = document.getElementById("opinion");
+    // let argumentSelector = document.getElementById("arguments");
+    // let statementInput = document.getElementById("statement-input");
+    // let tekst = document.getElementById("tekst");
+    // opinionSelector.addEventListener("click", () => {
+    //     argumentSelector.style.display = "block";
+    //     opinionSelector.disabled = true;
+    // });
+    //
+    // argumentSelector.addEventListener("change", () => {
+    //     let arg = argumentSelector.options[argumentSelector.selectedIndex].text;
+    //
+    //     //Check which optgroup the selected option is in
+    //     if (argumentSelector.options[argumentSelector.selectedIndex].parentNode.label === "eens") {
+    //         arg = ". Argument voor: " + arg.toLowerCase();
+    //     } else if (argumentSelector.options[argumentSelector.selectedIndex].parentNode.label === "oneens") {
+    //         arg = ". Argument tegen: " + arg.toLowerCase();
+    //     } else if (argumentSelector.options[argumentSelector.selectedIndex].parentNode.label === "mits") {
+    //         arg = ". Argument voor, mits: " + arg.toLowerCase();
+    //     }
+    //
+    //     let split_statement = tekst.innerHTML.split("…");
+    //     let statement = split_statement[0];
+    //
+    //     tekst.innerHTML = statement + arg;
+    //     statementInput.value = tekst.innerHTML;
+    //
+    //     opinionSelector.value = 0;
+    //     argumentSelector.value = 0;
+    //     argumentSelector.style.display = "none";
+    //     argumentSelector.innerHTML = "";
+    //     opinionSelector.disabled = false;
+    // });
 </script>
 </body>
 </html>
